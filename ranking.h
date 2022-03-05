@@ -8,11 +8,12 @@ using namespace std;
 
 void Rank(){
 	
-	fstream ranking;
+	fstream ranking,playyyer;
 	int quant_jogadores=0;
 	char caractere;
 	string s;
 	
+	playyyer.open("nomes.txt",ios::app);
 	ranking.open("ranking.txt",ios::trunc);
 	
 	while(getline(ranking,s)){//while com o getline e usado para passar de linha a linha no arquivo de leitura
@@ -23,6 +24,9 @@ void Rank(){
 		}
 	}
 	
+	for(int a = 0; a <= quant_jogadores; a++){//escreve os nomes dos usuarios e sua pontuacao em uma lista sem sobreescrever
+		playyyer << usuario[a].getNick() << "     " << usuario[a].getPontos << "\n";
+	}
 	ranking << "Quantidade de jogadores: " << quant_jogadores;
 	
 	/*
