@@ -37,8 +37,10 @@ int main(){
         ytail = cobra.getYtail();
         xposition = cobra.getX();
         yposition = cobra.getY();
-        if(xposition == fruitX && yposition == fruitY)
+        if(xposition == fruitX && yposition == fruitY){
             fruits.setCoord(WIDTH, HEIGHT);
+            randomN = fruits.getRand();
+        }
         gameOver = cobra.isOver();
 
         SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), {0, 0});

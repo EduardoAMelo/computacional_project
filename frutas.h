@@ -9,7 +9,7 @@ class Frutas{
         int setCoord(const int WIDTH, const int HEIGHT){
             fruitX = rand() % WIDTH;
             fruitY = rand() % HEIGHT;
-            random = 1;
+            random = rand() % 8;
         }
 
         int getFruitX(){

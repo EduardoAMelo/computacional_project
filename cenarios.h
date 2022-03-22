@@ -18,7 +18,40 @@ void main_scenario(int x, int y, const int WIDTH, const int HEIGHT, int nTail, i
             if (i == y && j == x)
                 cout << "@";
             else if (i == fruitY && j == fruitX)
-                cout << "F";
+                switch (random)
+                {
+                case 0:
+                    cout << "F";
+                    break;
+
+                case 1:
+                    cout << "F";
+                    break;
+
+                case 2:
+                    cout << "F";
+                    break;
+
+                case 3:
+                    cout << "S";
+                    break;
+
+                case 4:
+                    cout << "H";
+                    break;
+
+                case 5:
+                    cout << "F";
+                    break;
+
+                case 6:
+                    cout << "F";
+                    break;
+
+                case 7:
+                    cout << "F";
+                    break;
+                }
             else
             {
                 bool print = false;
