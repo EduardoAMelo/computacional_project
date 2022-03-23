@@ -1,11 +1,6 @@
-/*
-
-teste de cadastro
-
-*/
 #include <iostream>
 #include <string>
-#include <list>
+#include <fstream>
 
 using namespace std;
 
@@ -36,27 +31,23 @@ class Jogador{//declaracao da classe jogador
 		int getPontos(){
 			return pontos;
 		}
+
+		void Cadastra(){
+	
+    		int pnts = 0;
+			string name;
+			fstream ranking;
+    		
+			ranking.open("ranking.txt", ios::app);//abre o arquivo que contem os nomes e pontuacoes dos jogadores
+
+			cout << "Digite seu nickname: ";
+			cin >> name;
+			setNick(name);
+			setPontos(pnts);
+
+			ranking << getNick() << " " << getPontos() << endl;
+	
+			ranking.close();
+		}
+
 };
-
-void Cadastra(){
-	
-	list<Jogador>player;//criacao da lista 
-	Jogador usuario[100];
-    int i,pnts;
-	string name;
-    Jogador usuario_aux;
-	
-    i = quant_jogadores;
-
-	cout << "Digite seu nickname: ";
-	cin >> name;
-	usuario[i].setNick(name);
-	usuario[i].setPontos(pnts);
-	player.push_front(usuario[i]);
-	
-	cout << "Nome do jogador: " << usuario[i].getNick() << endl;
-	cout << "Pontuacao do jogador " << usuario[i].getNick() << " " << usuario[i].getPontos();
-
-    
-	
-}
