@@ -4,7 +4,6 @@
 #include <string>
 #include <fstream>
 #include <stdlib.h>
-#include "jogador.h"
 
 using namespace std;
 
