@@ -12,10 +12,11 @@ class Jogador{//declaracao da classe jogador
 	
 	public:
 		Jogador(){//construtor
-			nick = " ";
-			pontos = 0;
+			nick = "unknow";
+			pontos = 1;
 		}
 		
+		//metodos setters e getters
 		void setNick(string n){
 			nick = n;
 		}
@@ -32,22 +33,17 @@ class Jogador{//declaracao da classe jogador
 			return pontos;
 		}
 
+		//metodo de cadastro 
 		void Cadastra(){
 	
     		int pnts = 0;
 			string name;
-			fstream ranking;
-    		
-			ranking.open("ranking.txt", ios::app);//abre o arquivo que contem os nomes e pontuacoes dos jogadores
-
+	
 			cout << "Digite seu nickname: ";
 			cin >> name;
 			setNick(name);
 			setPontos(pnts);
-
-			ranking << getNick() << " " << getPontos() << endl;
 	
-			ranking.close();
 		}
 
 };

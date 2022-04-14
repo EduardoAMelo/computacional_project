@@ -4,8 +4,8 @@
 
 class Snake{
 
-    int x, y, tail_size; //snake´s head location and tail size
-    int tailX[100], tailY[100];//array of locations for snake body
+    int x, y, nTail; //snake´s head location and tail size
+    int tailX[100], tailY[100];
     enum direction {STOP = 0, LEFT, RIGHT, UP, DOWN};//WASD input declarion logic
     int width, height;
     bool over;
@@ -15,7 +15,7 @@ class Snake{
         Snake(const int WIDTH, const int HEIGHT, bool gameOver){
             x = WIDTH / 2;
             y = HEIGHT / 2;
-            tail_size = 0;
+            nTail = 0;
             dir = STOP;
             width = WIDTH;
             height = HEIGHT;
@@ -49,6 +49,20 @@ class Snake{
         }
 
         void Logic(){
+            int prevX = tailX[0];
+            int prevY = tailY[0];
+            int prev2X, prev2Y;
+            tailX[0] = x;
+            tailY[0] = y;
+            for (int i = 1; i < nTail; i++)
+            {
+                prev2X = tailX[i];
+                prev2Y = tailY[i];
+                tailX[i] = prevX;
+                tailY[i] = prevY;
+                prevX = prev2X;
+                prevY = prev2Y;
+            }
             switch (dir){ // selecting directions
             case LEFT:
                 x--;
@@ -67,7 +81,7 @@ class Snake{
             }
 
         //walls colision with snake
-            if (x >= width)
+            if (x >= width - 1)
                 x = 0;
             else if
                 (x < 0) x = width - 1;
@@ -76,6 +90,11 @@ class Snake{
                 y = 0;
             else if
                 (y < 0) y = height - 1;
+            
+
+            for (int i = 0; i < nTail; i++)
+                if (tailX[i] == x && tailY[i] == y)
+                    over = true;
         }
 
         int getX(){
@@ -83,5 +102,25 @@ class Snake{
         }
         int getY(){
             return y;
+        }
+
+        bool isOver(){
+            return over;
+        }
+
+
+        int getTail(int fruitX, int fruitY){
+            if(x == fruitX && y == fruitY)
+                nTail++;
+            return nTail;
+        }
+
+        int *getXtail(){
+            return tailX;
+        }
+
+
+        int *getYtail(){
+            return tailY;
         }
 };
