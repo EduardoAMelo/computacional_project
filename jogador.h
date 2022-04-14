@@ -6,7 +6,7 @@ using namespace std;
 
 class Jogador{//declaracao da classe jogador
 	
-	private:
+	private://atributos privados
 		string nick;
 		int pontos;
 	
