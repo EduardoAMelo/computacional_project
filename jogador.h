@@ -9,11 +9,13 @@ class Jogador{//declaracao da classe jogador
 	private://atributos privados
 		string nick;
 		int pontos;
+		int posicao;
 	
 	public:
 		Jogador(){//construtor
 			nick = "unknow";
 			pontos = 1;
+			posicao = 0;
 		}
 		
 		//metodos setters e getters
@@ -24,6 +26,10 @@ class Jogador{//declaracao da classe jogador
 		void setPontos(int pontuacao){
 			pontos = pontuacao;
 		}
+
+		void setPosicao(int p){
+			posicao = p;
+		}
 		
 		string getNick(){
 			return nick;
@@ -31,6 +37,10 @@ class Jogador{//declaracao da classe jogador
 		
 		int getPontos(){
 			return pontos;
+		}
+
+		int getPosicao(){
+			return posicao;
 		}
 
 		//metodo de cadastro 
