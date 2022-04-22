@@ -4,6 +4,7 @@
 #include <string>
 #include <fstream>
 #include <stdlib.h>
+#include <iomanip>
 #define TAM_HASH 199
 
 using namespace std;
@@ -29,8 +30,8 @@ void Rank(){
 	ranking.open("ranking.txt",ios::in);//tem que abrir primeiramente para leitura
 	
 	while(getline(ranking,s)){//while com o getline e usado para passar de linha a linha no arquivo de leitura
-		aux_num = ' ';
-		aux_str = ' ';
+		aux_num = ' ';//usado para recomecar a acumulacao de carcteres numericos
+		aux_str = ' ';//usado para recomecar a acumulacao de carcteres de letras
 		hash[quant_jogadores] = 0;
 		for(unsigned int i = 0; i <= s.size(); i++){
 			if(s[i] == '.'){//quando o caractere for igual ao ponto quer dizer que um jogador foi cadastrado no arquivo
@@ -104,9 +105,9 @@ void Rank(){
 
 	//imprime o ranking no terminal
 	cout << "Ranking: " << endl;
-	cout << "  Nome\t Pontos" << endl;
+	cout << "  Nome" << setw(30) << left << "Pontos" << endl;
 	for(int m = 0; m < quant_jogadores; m++){
-		cout << jogadores[m].getPosicao() << "" << jogadores[m].getNick() << "\t" << jogadores[m].getPontos() << "\n";
+		cout << setw(4) << left << jogadores[m].getPosicao() << setw(30) << left << jogadores[m].getNick() << " \7\t " << jogadores[m].getPontos() << "\n";
 	}
 	cout << endl;
 	
@@ -149,7 +150,7 @@ void Rank(){
 					//a comparacao abaixo ainda nao funciona mesmo se eu digitar um nome que eu sei que esta no ranking
 					if (chave == acesso[posicao])//se o nome digitado pelo usuario for igual ao nome da posicao em acesso ele entra na condicao if
 					{
-						cout << "informacoes do jogador: ";
+						cout << "informacoes do jogador: " << endl;
 						cout << " Nomes \t Pontos" << endl;
 						for(int b = 0; b < quant_jogadores; b++){//como podem ter jogadores com o mesmo nome entao precisamos percorrer tudo para caso exista  nos conseguimos imprimir as informacoes dos jogadores com o mesmo nick e com nicks que nao se repetem
 							if (chave == jogadores[b].getNick())//caso a chave digitda seja igual ao nome do jogador na posicao b ele imprime as informacoes desse jogador
@@ -170,10 +171,10 @@ void Rank(){
 		cout << "Aperte 'h' para procurar algum jogador no ranking, ou aperte 'v' para voltar ao menu principal \n";
 		cin >> escolha;
 	}
-	/* Impressao dos nomes nas posicoes da tabela hash
+	// Impressao dos nomes nas posicoes da tabela hash
 	for(int p = 0; p < TAM_HASH; p++){
 		cout << p <<" " << acesso[p] << endl;
-	}*/
+	}
 	
 
 	ranking.close();//fecha o arquivo

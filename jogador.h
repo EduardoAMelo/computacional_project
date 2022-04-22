@@ -48,7 +48,8 @@ class Jogador{//declaracao da classe jogador
 	
     		int pnts = 0;
 			string name;
-	
+			
+			cout << "Digite o nome sem espacos, sem numeros e sem ponto final" << endl;
 			cout << "Digite seu nickname: ";
 			cin >> name;
 			setNick(name);
