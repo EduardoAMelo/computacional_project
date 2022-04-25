@@ -19,18 +19,20 @@ int main(){
     fstream ranking;
     string str;
     string caractere;
-    bool gameOver = false;
     int pontuacao = 0;
+    bool gameOver = false, select = false, *changeSel;
+    changeSel = &select;
     Frutas fruits;
     Snake cobra(WIDTH, HEIGHT, gameOver);
-    int xposition, yposition, tailSize, *xtail, *ytail, fruitX, fruitY, randomN, vigia;
+    int xposition, yposition, tailSize, *xtail, *ytail, fruitX, fruitY, randomN, *tailmod;
     xposition = cobra.getX();
     yposition = cobra.getY();
     fruits.setCoord(WIDTH, HEIGHT);
     fruitX = fruits.getFruitX();
     fruitY = fruits.getFruitY();
     randomN = fruits.getRand();
-    tailSize = cobra.getTail(fruitX, fruitY);
+    tailSize = cobra.getTail(fruitX, fruitY, randomN);
+    tailmod = &tailSize;
     xtail = cobra.getXtail();
     ytail = cobra.getYtail();
     
@@ -72,26 +74,42 @@ int main(){
             ranking.open("ranking.txt",ios::app);//abre o arquivo e escreve abaixo
 
             usuario[quantidade_jogadores].Cadastra();
-            while (!gameOver){
-                main_scenario(xposition, yposition, WIDTH, HEIGHT, tailSize, xtail, ytail, fruitX, fruitY, randomN);
-                cobra.Input();
-                cobra.Logic();
-                fruitX = fruits.getFruitX();
-                fruitY = fruits.getFruitY();
-                tailSize = cobra.getTail(fruitX, fruitY);
-                xtail = cobra.getXtail();
-                ytail = cobra.getYtail();
-                xposition = cobra.getX();
-                yposition = cobra.getY();
-                if(xposition == fruitX && yposition == fruitY){
-                    fruits.setCoord(WIDTH, HEIGHT);
-                    pontuacao += 7;
-                    usuario[quantidade_jogadores].setPontos(pontuacao);
-                    randomN = fruits.getRand();
-                }
-                gameOver = cobra.isOver();
+            while(!gameOver){
+                while (!select){//while do cenario principal
+                    main_scenario(xposition, yposition, WIDTH, HEIGHT, tailSize, xtail, ytail, fruitX, fruitY, randomN);
+                    //logica da cobra
+                    cobra.Input();
+                    cobra.Logic();
+                    fruitX = fruits.getFruitX();
+                    fruitY = fruits.getFruitY();
+                    xtail = cobra.getXtail();
+                    ytail = cobra.getYtail();
+                    xposition = cobra.getX();
+                    yposition = cobra.getY();
+                    
+                    //logica da randomizacao da fruta e da cobra comendo a fruta especial
+                    if(xposition == fruitX && yposition == fruitY){
+                        tailSize = cobra.getTail(fruitX, fruitY, randomN);
+                        fruits.setCoord(WIDTH, HEIGHT);
+                        randomN = fruits.getRand();
+                        select = cobra.getSelect();
+                    }
+                    //trigger do gameover
+                    gameOver = cobra.isOver();
+                    if(gameOver)
+                        break;
 
-                SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), {0, 0});
+                    //codigo para dar refresh na tela mais suave pois system("cls") é muito ruim
+                    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), {0, 0});
+                }
+                system("cls");
+                if (select){//trigger do minigame
+                    while(select){    
+                        minigame(changeSel, tailmod, tailSize);
+                        //codigo para dar refresh na tela mais suave pois system("cls") é muito ruim
+                        SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), {0, 0});
+                    }
+                }
             }
             //apos o jogador perder, o seu nome e sua pontuacao sao registradas no ranking
             ranking << usuario[quantidade_jogadores].getNick() << " " << usuario[quantidade_jogadores].getPontos() << "." <<endl;
