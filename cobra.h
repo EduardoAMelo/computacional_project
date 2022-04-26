@@ -8,7 +8,7 @@ class Snake{//pretendo transformar em metodo pois so existe uma cobra
     int tailX[100], tailY[100];
     enum direction {STOP = 0, LEFT, RIGHT, UP, DOWN};//WASD input declarion logic
     int width, height;
-    bool over, select;
+    bool over, select, game = false;
     direction dir;
 
     public:
@@ -116,11 +116,18 @@ class Snake{//pretendo transformar em metodo pois so existe uma cobra
             if(x == fruitX && y == fruitY && random == 3){
                 nTail += 1;//para nunca ter valor menor que 1 "para os minigames"
                 select = true;
+                game = true;
             }
 
             else if(x == fruitX && y == fruitY && random == 4){
                 nTail+= 10;
                 select = false;
+            }
+
+            else if(x == fruitX && y == fruitY && random == 6){
+                nTail+= 10;
+                select = true;
+                game = false;
             }
 
             else if(x == fruitX && y == fruitY){
@@ -130,6 +137,7 @@ class Snake{//pretendo transformar em metodo pois so existe uma cobra
             return nTail;
         }
 
+        // Diversos metodos getters e setters importantes (varios como ponteiros para modificar valores de fora)
         int *getXtail(){
             return tailX;
         }
@@ -146,5 +154,25 @@ class Snake{//pretendo transformar em metodo pois so existe uma cobra
 
         void setTail(int tail){
             nTail = tail;
+        }
+
+        bool getGame(){
+            return game;
+        }
+
+
+        // Necessario para caso o jogador vá jogar outra partida
+        bool setDir(const int WIDTH, const int HEIGHT){
+            x = WIDTH / 2;
+            y = HEIGHT / 2;
+            nTail = 0;
+            dir = STOP;
+            width = WIDTH;
+            height = HEIGHT;
+            over = false;
+            select = false;
+            
+
+            return over;
         }
 };

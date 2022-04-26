@@ -1,5 +1,6 @@
 //bibliotecas
 #include <iostream>
+#include <algorithm>
 #include <list>
 #include <string>
 #include <fstream>
@@ -38,7 +39,7 @@ void Rank(){
 				quant_jogadores += 1;
 			}
 			if((s[i] != ' ') && (s[i] != '.') && (s[i] != '0') && (s[i] != '1') && (s[i] != '2') && (s[i] !='3') && (s[i] !='4') && (s[i] !='5') && (s[i] !='6') && (s[i] !='7') && (s[i] !='8') && (s[i] !='9')){
-				aux_str = aux_str + s[i];//Se o carctere da linha lida na posicao i for uma letra vai copiar e vai acumular ate for diferente de espaco onde acaba o nome e tambem quando for diferente de algum numero pra nao acumular numeros
+				aux_str.push_back(s[i]);//Se o carctere da linha lida na posicao i for uma letra vai copiar e vai acumular ate for diferente de espaco onde acaba o nome e tambem quando for diferente de algum numero pra nao acumular numeros
 				hash[quant_jogadores] += s[i];//primeira parte do calculo de hash do nome, pega caractere por caractere e faz o somatorio por meio do codigo ASCII
 			}
 			if((s[i] == '0') || (s[i] == '1') || (s[i] == '2') || (s[i] =='3') || (s[i] =='4') || (s[i] =='5') || (s[i] =='6') || (s[i] =='7') || (s[i] =='8') || (s[i] =='9')){
@@ -116,15 +117,10 @@ void Rank(){
 	cin >> escolha;
 
 	while( escolha != 'v'){
-
-		if (escolha == 'v')
-		{
-			exit;
-		}
-
 		if (escolha == 'h')
 		{
 			string chave;
+			string teste = jogadores[0].getNick();
 			int th=0;
 			int contador=0;
 			
@@ -137,7 +133,7 @@ void Rank(){
 			}
 
 			posicao = th % TAM_HASH;//calcula qual sera a posicao para o nome que foi pesquisado
-			cout << posicao << endl;//teste
+			// cout << posicao << endl;//teste
 			if (acesso[posicao].size() == 0)//caso nao tenha nada na posicao pesqisada quer dizer que o nome nao pode ser encontrado
 			{
 				cout << "Jogador nao encontrado " << endl;
@@ -148,10 +144,14 @@ void Rank(){
 				{
 					cout << acesso[posicao] << endl; //teste 
 					//a comparacao abaixo ainda nao funciona mesmo se eu digitar um nome que eu sei que esta no ranking
-					if (chave == acesso[posicao])//se o nome digitado pelo usuario for igual ao nome da posicao em acesso ele entra na condicao if
+					if (acesso[posicao] == acesso[posicao])//se o nome digitado pelo usuario for igual ao nome da posicao em acesso ele entra na condicao if
 					{
 						cout << "informacoes do jogador: " << endl;
 						cout << " Nomes \t Pontos" << endl;
+						cout << chave.length() << "\n" << jogadores[0].getNick().size() << endl;
+						for(int z = 0; z < teste.length(); z++){
+							cout << teste[z] << " Aqui" << endl;
+						}
 						for(int b = 0; b < quant_jogadores; b++){//como podem ter jogadores com o mesmo nome entao precisamos percorrer tudo para caso exista  nos conseguimos imprimir as informacoes dos jogadores com o mesmo nick e com nicks que nao se repetem
 							if (chave == jogadores[b].getNick())//caso a chave digitda seja igual ao nome do jogador na posicao b ele imprime as informacoes desse jogador
 							{

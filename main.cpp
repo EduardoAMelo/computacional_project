@@ -13,17 +13,20 @@
 using namespace std;
 
 int main(){
+    // todas as declaracoes da main
     Jogador usuario[100];
     int menu;
     int quantidade_jogadores = 0;
     fstream ranking;
     string str;
     string caractere;
-    bool gameOver = false, select = false, *changeSel;
+    bool gameOver = false, select = false, *changeSel, game;
     changeSel = &select;
     Frutas fruits;
     Snake cobra(WIDTH, HEIGHT, gameOver);
     int xposition, yposition, tailSize, *xtail, *ytail, fruitX, fruitY, randomN, *tailmod, minigTail, totalpoints = getPoints();
+
+    // Valores Iniciais para a cobra
     xposition = cobra.getX();
     yposition = cobra.getY();
     fruits.setCoord(WIDTH, HEIGHT);
@@ -35,6 +38,7 @@ int main(){
     xtail = cobra.getXtail();
     ytail = cobra.getYtail();
     
+    // Cout dos menus
     cout << "Menu de opcoes" << endl;
     cout << "Aperte 1 para jogar" << endl;
     cout << "Aperte 2 para ver o ranking" << endl;
@@ -43,8 +47,10 @@ int main(){
     cin >> menu;
     cout << "\n";
 
+    // Loop do Menu
     while (menu != 4)
     {
+        gameOver = false;
         ranking.open("ranking.txt",ios::in);//abre arquivo para leitura
             if (!ranking.is_open())//se o arquivo nao for aberto ele imprime a mensagem de erro
             {
@@ -74,7 +80,7 @@ int main(){
 
             usuario[quantidade_jogadores].Cadastra();
             system("cls");
-            while(!gameOver){
+            while(!gameOver){//While geral que controla o inicio e fim do game
                 while (!select){//while do cenario principal
                     main_scenario(xposition, yposition, WIDTH, HEIGHT, tailSize, xtail, ytail, fruitX, fruitY, randomN);
                     //logica da cobra
@@ -94,11 +100,14 @@ int main(){
                         fruits.setCoord(WIDTH, HEIGHT);
                         randomN = fruits.getRand();
                         select = cobra.getSelect();
+                        game = cobra.getGame();
                     }
                     //trigger do gameover
                     gameOver = cobra.isOver();
                     if(gameOver)
                         break;
+
+                    // Setador de pontos
                     totalpoints = getPoints();
                     usuario[quantidade_jogadores].setPontos(totalpoints);
 
@@ -106,13 +115,26 @@ int main(){
                     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), {0, 0});
                 }
                 system("cls");
-                if (select){//trigger do minigame   
-                        minigame(changeSel, tailmod, tailSize);
+                if (select){//trigger do minigame 
+                        // Jokenpo
+                        if(game)  
+                            minigame(changeSel, tailmod, tailSize);
+                        
+                        // Jogo da Memoria
+                        if (!game)  
+                            minigameTwo(changeSel, tailmod, tailSize);
+                        
+                        //Logica para não ocorrer a perca de pontos ao perder a calda (vencedores)
                         cobra.setTail(minigTail);
                         tailSize = minigTail;
                         //codigo para dar refresh na tela mais suave pois system("cls") é muito ruim
                         system("cls");
                 }
+            }
+            if(gameOver){//Logica para dar um reset na cobra
+                gameOver = cobra.setDir(WIDTH, HEIGHT);
+                totalpoints = resetPoints();
+                cobra.Logic();    
             }
             //apos o jogador perder, o seu nome e sua pontuacao sao registradas no ranking
             ranking << usuario[quantidade_jogadores].getNick() << " " << usuario[quantidade_jogadores].getPontos() << "." <<endl;
@@ -138,6 +160,7 @@ int main(){
         
         if (menu == 3)
 		{
+            // Tutorial geral
         	cout << "Use a tecla w para mover a cobrinha pra cima" << endl;	
         	cout << "Use a tecla a para mover a cobrinha pra esquerda" << endl;
         	cout << "Use a tecla d para mover a cobrinha pra a direita" << endl;
@@ -157,6 +180,7 @@ int main(){
             exit(4);//sai do programa
         }
         
+        // Continuacao do sistema de menu
         cout << "Menu de opcoes" << endl;
         cout << "Aperte 1 para jogar" << endl;
         cout << "Aperte 2 para ver o ranking" << endl;
