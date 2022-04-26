@@ -19,12 +19,11 @@ int main(){
     fstream ranking;
     string str;
     string caractere;
-    int pontuacao = 0;
     bool gameOver = false, select = false, *changeSel;
     changeSel = &select;
     Frutas fruits;
     Snake cobra(WIDTH, HEIGHT, gameOver);
-    int xposition, yposition, tailSize, *xtail, *ytail, fruitX, fruitY, randomN, *tailmod;
+    int xposition, yposition, tailSize, *xtail, *ytail, fruitX, fruitY, randomN, *tailmod, minigTail, totalpoints = getPoints();
     xposition = cobra.getX();
     yposition = cobra.getY();
     fruits.setCoord(WIDTH, HEIGHT);
@@ -32,7 +31,7 @@ int main(){
     fruitY = fruits.getFruitY();
     randomN = fruits.getRand();
     tailSize = cobra.getTail(fruitX, fruitY, randomN);
-    tailmod = &tailSize;
+    tailmod = &minigTail;
     xtail = cobra.getXtail();
     ytail = cobra.getYtail();
     
@@ -74,6 +73,7 @@ int main(){
             ranking.open("ranking.txt",ios::app);//abre o arquivo e escreve abaixo
 
             usuario[quantidade_jogadores].Cadastra();
+            system("cls");
             while(!gameOver){
                 while (!select){//while do cenario principal
                     main_scenario(xposition, yposition, WIDTH, HEIGHT, tailSize, xtail, ytail, fruitX, fruitY, randomN);
@@ -90,6 +90,7 @@ int main(){
                     //logica da randomizacao da fruta e da cobra comendo a fruta especial
                     if(xposition == fruitX && yposition == fruitY){
                         tailSize = cobra.getTail(fruitX, fruitY, randomN);
+                        setChanges(randomN);
                         fruits.setCoord(WIDTH, HEIGHT);
                         randomN = fruits.getRand();
                         select = cobra.getSelect();
@@ -98,17 +99,19 @@ int main(){
                     gameOver = cobra.isOver();
                     if(gameOver)
                         break;
+                    totalpoints = getPoints();
+                    usuario[quantidade_jogadores].setPontos(totalpoints);
 
                     //codigo para dar refresh na tela mais suave pois system("cls") é muito ruim
                     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), {0, 0});
                 }
                 system("cls");
-                if (select){//trigger do minigame
-                    while(select){    
+                if (select){//trigger do minigame   
                         minigame(changeSel, tailmod, tailSize);
+                        cobra.setTail(minigTail);
+                        tailSize = minigTail;
                         //codigo para dar refresh na tela mais suave pois system("cls") é muito ruim
-                        SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), {0, 0});
-                    }
+                        system("cls");
                 }
             }
             //apos o jogador perder, o seu nome e sua pontuacao sao registradas no ranking

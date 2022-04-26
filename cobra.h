@@ -15,7 +15,7 @@ class Snake{//pretendo transformar em metodo pois so existe uma cobra
         Snake(const int WIDTH, const int HEIGHT, bool gameOver){
             x = WIDTH / 2;
             y = HEIGHT / 2;
-            nTail = 2;
+            nTail = 0;
             dir = STOP;
             width = WIDTH;
             height = HEIGHT;
@@ -142,5 +142,9 @@ class Snake{//pretendo transformar em metodo pois so existe uma cobra
         
         bool getSelect(){
             return select;
+        }
+
+        void setTail(int tail){
+            nTail = tail;
         }
 };

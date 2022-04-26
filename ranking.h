@@ -41,7 +41,7 @@ void Rank(){
 				aux_str = aux_str + s[i];//Se o carctere da linha lida na posicao i for uma letra vai copiar e vai acumular ate for diferente de espaco onde acaba o nome e tambem quando for diferente de algum numero pra nao acumular numeros
 				hash[quant_jogadores] += s[i];//primeira parte do calculo de hash do nome, pega caractere por caractere e faz o somatorio por meio do codigo ASCII
 			}
-			if((s[i] == '0') or (s[i] == '1') or (s[i] == '2') or (s[i] =='3') or (s[i] =='4') or (s[i] =='5') or (s[i] =='6') or (s[i] =='7') or (s[i] =='8') or (s[i] =='9')){
+			if((s[i] == '0') || (s[i] == '1') || (s[i] == '2') || (s[i] =='3') || (s[i] =='4') || (s[i] =='5') || (s[i] =='6') || (s[i] =='7') || (s[i] =='8') || (s[i] =='9')){
 				aux_num = aux_num + s[i];//Se o carctere na posicao i for numerico ele copia pra uma string aux_num e vai acumulando
 			}
 		}

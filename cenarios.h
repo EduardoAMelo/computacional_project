@@ -7,6 +7,8 @@
 
 using namespace std;
 
+int points = 0;
+
 //banco de dados das pontuacoes utilizadas no minigame
 string bancoDados[] = { R"(
 //   .----------------.  .----------------.  .----------------. 
@@ -94,7 +96,6 @@ void main_scenario(int x, int y, const int WIDTH, const int HEIGHT, int nTail, i
 
                 case 4:
                     cout << "H";
-                    
                     break;
 
                 case 5:
@@ -125,12 +126,14 @@ void main_scenario(int x, int y, const int WIDTH, const int HEIGHT, int nTail, i
     for (int i = 0; i < WIDTH+2; i++)
         cout << "#";
     cout << endl;
+    cout << "Pontos:" << points;
     // cout << "Score:" << score << endl;
 }
 
 //metodo do minigame
 void minigame(bool *select, int *mod, int tail){
     int counter, totalBot = 0, totalPlayer = 0, resposta, randomico;
+    int y;
     srand (time (0));
     randomico = rand() % 3;
     string names[] = {"Pedra", "Papel", "Tesoura"};//array que segura os 3 tipos de resposta
@@ -233,28 +236,28 @@ void minigame(bool *select, int *mod, int tail){
         //cout dos resultados
         cout << "Sua resposta é " << names[resposta - 1] << "\n" << respostas[resposta - 1] << endl;
         cout << "Robo escolheu " << names[randomico] << "\n" << respostas[randomico] << endl;
-        Sleep(2000);
+        Sleep(1000);
         system("cls");
 
         //ifs que vao ser importantes para declarar o vencedor com mais pontos
         if(totalBot == 0 && totalPlayer == 0){
             cout << bancoDados[3] << endl;
-            Sleep(2000);
+            Sleep(1000);
             system("cls");
         }
         if(totalBot == 0 && totalPlayer == 1){
             cout << bancoDados[1] << endl;
-            Sleep(2000);
+            Sleep(1000);
             system("cls");
         }
         if(totalBot == 1 && totalPlayer == 0){
             cout << bancoDados[0] << endl;
-            Sleep(2000);
+            Sleep(1000);
             system("cls");
         }
         if(totalBot == 1 && totalPlayer == 1){
             cout << bancoDados[2] << endl;
-            Sleep(2000);
+            Sleep(1000);
             system("cls");
         }
         if(totalBot == 2 || totalPlayer == 2){
@@ -278,6 +281,7 @@ void minigame(bool *select, int *mod, int tail){
 //                                                                        
 )";
         Sleep(4000);
+        *mod = tail;
     }
     if(totalBot > totalPlayer){
         cout << R"(
@@ -310,10 +314,52 @@ void minigame(bool *select, int *mod, int tail){
 //                                                                                      
 )";
         Sleep(4000);
-        *mod = round(tail/2);
-
+        y= tail ^ (tail >> 1);
+        y = y ^ (y >> 2);
+        y = y ^ (y >> 4);
+        y = y ^ (y >> 8);
+        y = y ^ (y >> 16);
+        //checking the rightmost bit
+        if (y & 1)
+            *mod = (tail+1)/2;
+        *mod = tail/2;
+        points += 200;
     }
 
     system("cls");
+    
     *select = false;
+}
+
+void setChanges(int random){
+    switch (random)
+                {
+                case 0:
+                    points += 10;
+                    break;
+
+                case 1:
+                    points += 10;
+                    break;
+    
+                case 2:
+                    points += 10;
+                    break;
+
+                case 3:
+                    points += 10;
+                    break;
+
+                case 4:
+                    points += 100;
+                    break;
+
+                case 5:
+                    points += 10;
+                    break;
+                }
+}
+
+int getPoints(){
+    return points;
 }
