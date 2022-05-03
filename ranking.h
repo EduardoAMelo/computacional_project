@@ -1,6 +1,5 @@
 //bibliotecas
 #include <iostream>
-#include <algorithm>
 #include <list>
 #include <string>
 #include <fstream>
@@ -10,6 +9,22 @@
 
 using namespace std;
 
+bool comparaNome( string principal, string secundaria){
+  int tamanho = principal.size();
+
+  for (int i = 0; i < tamanho; i++)
+    {
+      if ((int) principal[i] == (int) secundaria[i]){
+
+      }
+      else{
+        return false;
+      }
+    }
+    
+    return true;
+
+}
 
 void Rank(){
 	
@@ -32,17 +47,17 @@ void Rank(){
 	
 	while(getline(ranking,s)){//while com o getline e usado para passar de linha a linha no arquivo de leitura
 		aux_num = ' ';//usado para recomecar a acumulacao de carcteres numericos
-		aux_str = ' ';//usado para recomecar a acumulacao de carcteres de letras
+		aux_str = "";//usado para recomecar a acumulacao de carcteres de letras
 		hash[quant_jogadores] = 0;
 		for(unsigned int i = 0; i <= s.size(); i++){
 			if(s[i] == '.'){//quando o caractere for igual ao ponto quer dizer que um jogador foi cadastrado no arquivo
 				quant_jogadores += 1;
 			}
-			if((s[i] != ' ') && (s[i] != '.') && (s[i] != '0') && (s[i] != '1') && (s[i] != '2') && (s[i] !='3') && (s[i] !='4') && (s[i] !='5') && (s[i] !='6') && (s[i] !='7') && (s[i] !='8') && (s[i] !='9')){
-				aux_str.push_back(s[i]);//Se o carctere da linha lida na posicao i for uma letra vai copiar e vai acumular ate for diferente de espaco onde acaba o nome e tambem quando for diferente de algum numero pra nao acumular numeros
+			if((int)(s[i] != 32) && (s[i] != '.') && (s[i] != '0') && (s[i] != '1') && (s[i] != '2') && (s[i] !='3') && (s[i] !='4') && (s[i] !='5') && (s[i] !='6') && (s[i] !='7') && (s[i] !='8') && (s[i] !='9')){
+				aux_str = aux_str + s[i];//Se o carctere da linha lida na posicao i for uma letra vai copiar e vai acumular ate for diferente de espaco onde acaba o nome e tambem quando for diferente de algum numero pra nao acumular numeros
 				hash[quant_jogadores] += s[i];//primeira parte do calculo de hash do nome, pega caractere por caractere e faz o somatorio por meio do codigo ASCII
 			}
-			if((s[i] == '0') || (s[i] == '1') || (s[i] == '2') || (s[i] =='3') || (s[i] =='4') || (s[i] =='5') || (s[i] =='6') || (s[i] =='7') || (s[i] =='8') || (s[i] =='9')){
+			if((s[i] == '0') or (s[i] == '1') or (s[i] == '2') or (s[i] =='3') or (s[i] =='4') or (s[i] =='5') or (s[i] =='6') or (s[i] =='7') or (s[i] =='8') or (s[i] =='9')){
 				aux_num = aux_num + s[i];//Se o carctere na posicao i for numerico ele copia pra uma string aux_num e vai acumulando
 			}
 		}
@@ -75,7 +90,6 @@ void Rank(){
 		pos++;
 		
 	}
-	ranking.close();
 
 	pontuacoes.sort();//ordenacao de pontos
 	pontuacoes.reverse();//coloca em ordem decrescente 
@@ -92,12 +106,6 @@ void Rank(){
 		}
 		pontuacoes.pop_front();//precisa tirar o maior valor apos a comparacao pra poder comparar as pontuacoes dos jogadores com o proximo valor de pontuacao 
 	}
-	
-	ranking.open("ranking.txt",ios::out|ios::trunc);//abre pra sobreescrita
-	//reescreve o ranking no arquivo txt
-	for(int n = 0; n < quant_jogadores; n++){
-		ranking <<jogadores[n].getNick() << " " <<jogadores[n].getPontos() << "." << "\n";//imprime no arquivo .txt os usuarios e suas pontuacoes ja ordenadas
-	}
 
 	//atribui a cada jogador uma posicao
 	for(int n = 0; n < quant_jogadores; n++){
@@ -108,7 +116,7 @@ void Rank(){
 	cout << "Ranking: " << endl;
 	cout << "  Nome" << setw(30) << left << "Pontos" << endl;
 	for(int m = 0; m < quant_jogadores; m++){
-		cout << setw(4) << left << jogadores[m].getPosicao() << setw(30) << left << jogadores[m].getNick() << " \7\t " << jogadores[m].getPontos() << "\n";
+		cout << setw(4) << left << jogadores[m].getPosicao() << setw(30) << left << jogadores[m].getNick() << jogadores[m].getPontos() << "\n";
 	}
 	cout << endl;
 	
@@ -117,10 +125,16 @@ void Rank(){
 	cin >> escolha;
 
 	while( escolha != 'v'){
+
+		if (escolha == 'v')
+		{
+			exit;
+		}
+
 		if (escolha == 'h')
 		{
+			//Parte do hash nao funciona como deveria
 			string chave;
-			string teste = jogadores[0].getNick();
 			int th=0;
 			int contador=0;
 			
@@ -133,7 +147,7 @@ void Rank(){
 			}
 
 			posicao = th % TAM_HASH;//calcula qual sera a posicao para o nome que foi pesquisado
-			// cout << posicao << endl;//teste
+
 			if (acesso[posicao].size() == 0)//caso nao tenha nada na posicao pesqisada quer dizer que o nome nao pode ser encontrado
 			{
 				cout << "Jogador nao encontrado " << endl;
@@ -142,20 +156,15 @@ void Rank(){
 			else{//caso tenha algo escrito entrara no loop while
 				while (acesso[posicao].size() != 0)//e importante a verificacao para saber se existe algum nome na posicao
 				{
-					cout << acesso[posicao] << endl; //teste 
 					//a comparacao abaixo ainda nao funciona mesmo se eu digitar um nome que eu sei que esta no ranking
-					if (acesso[posicao] == acesso[posicao])//se o nome digitado pelo usuario for igual ao nome da posicao em acesso ele entra na condicao if
+					if (comparaNome(chave, acesso[posicao]))//se o nome digitado pelo usuario for igual ao nome da posicao em acesso ele entra na condicao if
 					{
 						cout << "informacoes do jogador: " << endl;
-						cout << " Nomes \t Pontos" << endl;
-						cout << chave.length() << "\n" << jogadores[0].getNick().size() << endl;
-						for(int z = 0; z < teste.length(); z++){
-							cout << teste[z] << " Aqui" << endl;
-						}
+						cout << " Nomes" << setw(30) << left << "Pontos" << endl;
 						for(int b = 0; b < quant_jogadores; b++){//como podem ter jogadores com o mesmo nome entao precisamos percorrer tudo para caso exista  nos conseguimos imprimir as informacoes dos jogadores com o mesmo nick e com nicks que nao se repetem
-							if (chave == jogadores[b].getNick())//caso a chave digitda seja igual ao nome do jogador na posicao b ele imprime as informacoes desse jogador
+							if (comparaNome(chave, jogadores[b].getNick()))//caso a chave digitda seja igual ao nome do jogador na posicao b ele imprime as informacoes desse jogador
 							{
-								cout << jogadores[b].getPosicao() << " " << jogadores[b].getNick() << "\t" << jogadores[b].getPontos() << "\n";							
+								cout << setw(4) << left << jogadores[b].getPosicao() << setw(30) << left << jogadores[b].getNick() << jogadores[b].getPontos() << "\n";	
 							}
 						}
 						contador++;//temos que ter um contador porque pode ser que o nome pesquisado, ou seja a chave, tenha o mesmo valor de hash que outro nome mesmo sendo diferentes, e nos nao queremos o nome de uma certa posicao, mas queremos um nome especifico que pode nem estar na tabela,porem tendo o mesmo hash de um nome que esta 
@@ -168,14 +177,10 @@ void Rank(){
 			}
 	
 		}
+		cout << endl;
 		cout << "Aperte 'h' para procurar algum jogador no ranking, ou aperte 'v' para voltar ao menu principal \n";
 		cin >> escolha;
 	}
-	// Impressao dos nomes nas posicoes da tabela hash
-	for(int p = 0; p < TAM_HASH; p++){
-		cout << p <<" " << acesso[p] << endl;
-	}
-	
 
 	ranking.close();//fecha o arquivo
 
